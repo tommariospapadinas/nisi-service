@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Νησί — Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A2623;          /* night water */
+    --teal:#2E8C7E;
+    --teal-deep:#123F39;
+    --aqua:#5FB7A6;
+    --sand:#E8D4BE;
+    --terracotta:#9A6B4A;
+    --orange:#E8923C;
+    --sand-dim:rgba(232,212,190,.62);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:"Work Sans",system-ui,sans-serif;
+    color:var(--sand);
+    background:
+      radial-gradient(120% 80% at 50% -10%, #1B5A51 0%, var(--teal-deep) 42%, var(--ink) 100%);
+    min-height:100dvh;
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    position:relative;
+  }
+  /* signature: quiet water horizon at the base */
+  .waves{position:fixed;left:0;right:0;bottom:0;height:34vh;pointer-events:none;opacity:.5;z-index:0}
+  .waves svg{width:100%;height:100%;display:block}
+  @media (prefers-reduced-motion:no-preference){
+    .wave-a{animation:drift 14s ease-in-out infinite alternate}
+    .wave-b{animation:drift 20s ease-in-out infinite alternate-reverse}
+  }
+  @keyframes drift{from{transform:translateX(-3%)}to{transform:translateX(3%)}}
+
+  .wrap{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
+    padding:calc(env(safe-area-inset-top) + 34px) 24px calc(env(safe-area-inset-bottom) + 26px)}
+
+  .mark{
+    font-family:"Fraunces",serif;font-weight:500;font-size:26px;letter-spacing:.14em;
+    text-transform:lowercase;color:var(--sand);opacity:.9;text-align:center}
+  .mark .dot{color:var(--orange)}
+
+  .table{margin-top:auto;text-align:center;padding-bottom:8px}
+  .table .lbl{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--sand-dim)}
+  .table .num{
+    font-family:"Fraunces",serif;font-weight:600;font-size:112px;line-height:.92;
+    margin-top:2px;color:var(--sand);
+    text-shadow:0 8px 40px rgba(0,0,0,.35)}
+
+  .actions{margin-top:30px;display:flex;flex-direction:column;gap:14px;margin-bottom:6px}
+  .btn{
+    appearance:none;border:1px solid rgba(232,212,190,.16);
+    background:rgba(232,212,190,.05);
+    color:var(--sand);
+    font-family:"Work Sans",sans-serif;font-size:19px;font-weight:500;letter-spacing:.01em;
+    min-height:70px;border-radius:18px;padding:0 22px;
+    display:flex;align-items:center;gap:16px;text-align:left;
+    backdrop-filter:blur(6px);
+    transition:transform .12s ease, background .2s ease, border-color .2s ease;
+    cursor:pointer;position:relative;overflow:hidden}
+  .btn:active{transform:scale(.985)}
+  .btn:focus-visible{outline:3px solid var(--aqua);outline-offset:2px}
+  .btn .ic{font-size:24px;width:26px;text-align:center;flex:none}
+  .btn .arrow{margin-left:auto;opacity:.35;font-size:20px;transition:opacity .2s}
+  .btn:hover{background:rgba(232,212,190,.09);border-color:rgba(232,212,190,.3)}
+  .btn[data-a="call"] .ic{color:var(--aqua)}
+  .btn[data-a="bill"] .ic{color:var(--orange)}
+  .btn[data-a="order"] .ic{color:var(--terracotta)}
+  .btn[disabled]{opacity:.5;pointer-events:none}
+  /* tap ripple — an island in water */
+  .ripple{position:absolute;border-radius:50%;transform:translate(-50%,-50%) scale(0);
+    background:radial-gradient(circle,rgba(95,183,166,.5),rgba(95,183,166,0) 70%);
+    pointer-events:none}
+  @media (prefers-reduced-motion:no-preference){
+    .ripple{animation:rip .6s ease-out forwards}
+  }
+  @keyframes rip{to{transform:translate(-50%,-50%) scale(9);opacity:0}}
+
+  .hint{text-align:center;font-size:12.5px;color:var(--sand-dim);margin-top:14px;letter-spacing:.02em}
+
+  /* confirmation overlay */
+  .done{position:fixed;inset:0;z-index:3;display:none;place-items:center;
+    background:radial-gradient(100% 70% at 50% 40%, rgba(18,63,57,.96), rgba(10,38,35,.98));
+    padding:32px;text-align:center}
+  .done.show{display:grid}
+  .done .check{width:96px;height:96px;border-radius:50%;margin:0 auto 26px;
+    display:grid;place-items:center;background:rgba(95,183,166,.14);
+    border:2px solid var(--aqua)}
+  .done .check svg{width:44px;height:44px}
+  @media (prefers-reduced-motion:no-preference){
+    .done.show .check{animation:pop .45s cubic-bezier(.2,1.3,.4,1) both}
+  }
+  @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+  .done h2{font-family:"Fraunces",serif;font-weight:500;font-size:30px;margin:0 0 8px;color:var(--sand)}
+  .done p{margin:0;color:var(--sand-dim);font-size:16px;max-width:22ch}
+  .done .back{margin-top:30px;font-size:14px;color:var(--aqua);background:none;border:none;
+    letter-spacing:.04em;cursor:pointer;padding:10px}
+</style>
+</head>
+<body>
+  <div class="waves" aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path class="wave-b" d="M0,180 C300,120 500,240 720,180 C920,126 1050,210 1200,170 L1200,300 L0,300 Z" fill="#2E8C7E" opacity=".28"/>
+      <path class="wave-a" d="M0,210 C280,160 520,260 780,205 C980,164 1080,232 1200,200 L1200,300 L0,300 Z" fill="#5FB7A6" opacity=".22"/>
+    </svg>
+  </div>
+
+  <div class="wrap">
+    <div class="mark">νησ<span class="dot">ί</span></div>
+
+    <div class="table">
+      <div class="lbl">Τραπέζι</div>
+      <div class="num" id="tableNum">—</div>
+    </div>
+
+    <div class="actions" id="actions">
+      <button class="btn" data-a="call" onclick="tap(this,event)">
+        <span class="ic">🔔</span><span>Κλήση σερβιτόρου</span><span class="arrow">→</span>
+      </button>
+      <button class="btn" data-a="bill" onclick="tap(this,event)">
+        <span class="ic">💳</span><span>Λογαριασμό</span><span class="arrow">→</span>
+      </button>
+      <button class="btn" data-a="order" onclick="tap(this,event)">
+        <span class="ic">🍸</span><span>Νέα παραγγελία</span><span class="arrow">→</span>
+      </button>
+    </div>
+    <div class="hint">Ένα άγγιγμα — ερχόμαστε στο τραπέζι σας.</div>
+  </div>
+
+  <div class="done" id="done" role="status" aria-live="polite">
+    <div>
+      <div class="check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5FB7A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h2 id="doneTitle">Λάβαμε το μήνυμά σας</h2>
+      <p id="doneMsg">Ο σερβιτόρος ενημερώθηκε και έρχεται αμέσως.</p>
+      <button class="back" onclick="closeDone()">Επιστροφή</button>
+    </div>
+  </div>
+
+<script>
+  // Table number: Apps Script replaces __TABLE__ on serve.
+  // Standalone preview falls back to ?table= in the URL, then a demo value.
+  var TABLE = (function(){
+    var injected = "__TABLE__";
+    if (injected && injected.indexOf("__TABLE") === -1 && injected !== "") return injected;
+    var p = new URLSearchParams(location.search).get("table");
+    return p || "5";
+  })();
+  document.getElementById("tableNum").textContent = TABLE;
+
+  var COPY = {
+    call:  {t:"Λάβαμε το μήνυμά σας", m:"Ο σερβιτόρος ενημερώθηκε και έρχεται αμέσως."},
+    bill:  {t:"Ετοιμάζουμε τον λογαριασμό", m:"Ένας σερβιτόρος έρχεται στο τραπέζι σας."},
+    order: {t:"Ερχόμαστε για παραγγελία", m:"Κρατήστε λίγο — είμαστε στο τραπέζι σας αμέσως."},
+    again: {t:"Σας έχουμε ήδη", m:"Η κλήση σας καταγράφηκε — ερχόμαστε!"}
+  };
+
+  function ripple(btn, ev){
+    var r = document.createElement("span");
+    r.className = "ripple";
+    var rect = btn.getBoundingClientRect();
+    var x = (ev && ev.clientX ? ev.clientX : rect.left+rect.width/2) - rect.left;
+    var y = (ev && ev.clientY ? ev.clientY : rect.top+rect.height/2) - rect.top;
+    r.style.left = x+"px"; r.style.top = y+"px";
+    r.style.width = r.style.height = Math.max(rect.width,rect.height)+"px";
+    btn.appendChild(r);
+    setTimeout(function(){ r.remove(); }, 650);
+  }
+
+  function tap(btn, ev){
+    ripple(btn, ev);
+    var action = btn.getAttribute("data-a");
+    // lock all buttons briefly to avoid double-fire
+    var all = document.querySelectorAll(".btn");
+    all.forEach(function(b){ b.disabled = true; });
+
+    var onOk = function(res){
+      var key = (res && res.suppressed) ? "again" : action;
+      show(key);
+      setTimeout(function(){ all.forEach(function(b){ b.disabled = false; }); }, 400);
+    };
+    var onFail = function(){
+      // failure is direction, not mood: tell them what to do
+      document.getElementById("doneTitle").textContent = "Δεν στάλθηκε";
+      document.getElementById("doneMsg").textContent = "Δοκιμάστε ξανά ή καλέστε τον σερβιτόρο με το χέρι.";
+      document.getElementById("done").classList.add("show");
+      all.forEach(function(b){ b.disabled = false; });
+    };
+
+    if (window.google && google.script && google.script.run){
+      google.script.run.withSuccessHandler(onOk).withFailureHandler(onFail).notify(TABLE, action);
+    } else {
+      // preview mode (no backend): simulate success
+      setTimeout(function(){ onOk({ok:true, suppressed:false}); }, 650);
+    }
+  }
+
+  function show(key){
+    var c = COPY[key] || COPY.call;
+    document.getElementById("doneTitle").textContent = c.t;
+    document.getElementById("doneMsg").textContent = c.m;
+    document.getElementById("done").classList.add("show");
+    clearTimeout(window.__t);
+    window.__t = setTimeout(closeDone, 5000);
+  }
+  function closeDone(){ document.getElementById("done").classList.remove("show"); }
+</script>
+</body>
+</html>
