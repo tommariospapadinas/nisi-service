@@ -9,99 +9,101 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0A2623;          /* night water */
-    --teal:#2E8C7E;
-    --teal-deep:#123F39;
-    --aqua:#5FB7A6;
-    --sand:#E8D4BE;
-    --terracotta:#9A6B4A;
-    --orange:#E8923C;
-    --sand-dim:rgba(232,212,190,.62);
+    --ink:#0A2623; --teal:#2E8C7E; --teal-deep:#123F39; --aqua:#5FB7A6;
+    --sand:#E8D4BE; --terracotta:#9A6B4A; --orange:#E8923C; --sand-dim:rgba(232,212,190,.62);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;height:100%}
-  body{
-    font-family:"Work Sans",system-ui,sans-serif;
-    color:var(--sand);
-    background:
-      radial-gradient(120% 80% at 50% -10%, #1B5A51 0%, var(--teal-deep) 42%, var(--ink) 100%);
-    min-height:100dvh;
-    display:flex;flex-direction:column;
-    overflow:hidden;
-    position:relative;
-  }
-  /* signature: quiet water horizon at the base */
+  body{font-family:"Work Sans",system-ui,sans-serif;color:var(--sand);
+    background:radial-gradient(120% 80% at 50% -10%, #1B5A51 0%, var(--teal-deep) 42%, var(--ink) 100%);
+    min-height:100dvh;display:flex;flex-direction:column;overflow:hidden;position:relative}
   .waves{position:fixed;left:0;right:0;bottom:0;height:34vh;pointer-events:none;opacity:.5;z-index:0}
   .waves svg{width:100%;height:100%;display:block}
   @media (prefers-reduced-motion:no-preference){
     .wave-a{animation:drift 14s ease-in-out infinite alternate}
-    .wave-b{animation:drift 20s ease-in-out infinite alternate-reverse}
-  }
+    .wave-b{animation:drift 20s ease-in-out infinite alternate-reverse}}
   @keyframes drift{from{transform:translateX(-3%)}to{transform:translateX(3%)}}
-
   .wrap{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;
-    padding:calc(env(safe-area-inset-top) + 34px) 24px calc(env(safe-area-inset-bottom) + 26px)}
-
-  .mark{
-    font-family:"Fraunces",serif;font-weight:500;font-size:26px;letter-spacing:.14em;
+    padding:calc(env(safe-area-inset-top) + 30px) 24px calc(env(safe-area-inset-bottom) + 22px)}
+  .mark{font-family:"Fraunces",serif;font-weight:500;font-size:26px;letter-spacing:.14em;
     text-transform:lowercase;color:var(--sand);opacity:.9;text-align:center}
   .mark .dot{color:var(--orange)}
-
-  .table{margin-top:auto;text-align:center;padding-bottom:8px}
+  .role{text-align:center;font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+    margin-top:8px;color:var(--sand-dim);min-height:14px}
+  .table{margin-top:auto;text-align:center;padding-bottom:6px}
   .table .lbl{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--sand-dim)}
-  .table .num{
-    font-family:"Fraunces",serif;font-weight:600;font-size:112px;line-height:.92;
-    margin-top:2px;color:var(--sand);
-    text-shadow:0 8px 40px rgba(0,0,0,.35)}
-
-  .actions{margin-top:30px;display:flex;flex-direction:column;gap:14px;margin-bottom:6px}
-  .btn{
-    appearance:none;border:1px solid rgba(232,212,190,.16);
-    background:rgba(232,212,190,.05);
-    color:var(--sand);
-    font-family:"Work Sans",sans-serif;font-size:19px;font-weight:500;letter-spacing:.01em;
-    min-height:70px;border-radius:18px;padding:0 22px;
-    display:flex;align-items:center;gap:16px;text-align:left;
-    backdrop-filter:blur(6px);
-    transition:transform .12s ease, background .2s ease, border-color .2s ease;
+  .table .num{font-family:"Fraunces",serif;font-weight:600;font-size:104px;line-height:.92;
+    margin-top:2px;color:var(--sand);text-shadow:0 8px 40px rgba(0,0,0,.35)}
+  .actions{margin-top:26px;display:flex;flex-direction:column;gap:13px}
+  .btn{appearance:none;border:1px solid rgba(232,212,190,.16);background:rgba(232,212,190,.05);
+    color:var(--sand);font-family:"Work Sans",sans-serif;font-size:19px;font-weight:500;
+    min-height:70px;border-radius:18px;padding:0 22px;display:flex;align-items:center;gap:16px;
+    text-align:left;backdrop-filter:blur(6px);transition:transform .12s,background .2s,border-color .2s;
     cursor:pointer;position:relative;overflow:hidden}
   .btn:active{transform:scale(.985)}
   .btn:focus-visible{outline:3px solid var(--aqua);outline-offset:2px}
   .btn .ic{font-size:24px;width:26px;text-align:center;flex:none}
-  .btn .arrow{margin-left:auto;opacity:.35;font-size:20px;transition:opacity .2s}
-  .btn:hover{background:rgba(232,212,190,.09);border-color:rgba(232,212,190,.3)}
+  .btn .arrow{margin-left:auto;opacity:.35;font-size:20px}
   .btn[data-a="call"] .ic{color:var(--aqua)}
   .btn[data-a="bill"] .ic{color:var(--orange)}
   .btn[data-a="order"] .ic{color:var(--terracotta)}
   .btn[disabled]{opacity:.5;pointer-events:none}
-  /* tap ripple — an island in water */
+  .btn.staff{min-height:96px;justify-content:center;font-size:22px;font-weight:600;
+    background:rgba(95,183,166,.12);border-color:var(--aqua);color:var(--sand)}
+  .btn.staff .ic{color:var(--aqua);font-size:28px}
   .ripple{position:absolute;border-radius:50%;transform:translate(-50%,-50%) scale(0);
-    background:radial-gradient(circle,rgba(95,183,166,.5),rgba(95,183,166,0) 70%);
-    pointer-events:none}
-  @media (prefers-reduced-motion:no-preference){
-    .ripple{animation:rip .6s ease-out forwards}
-  }
+    background:radial-gradient(circle,rgba(95,183,166,.5),rgba(95,183,166,0) 70%);pointer-events:none}
+  @media (prefers-reduced-motion:no-preference){.ripple{animation:rip .6s ease-out forwards}}
   @keyframes rip{to{transform:translate(-50%,-50%) scale(9);opacity:0}}
-
-  .hint{text-align:center;font-size:12.5px;color:var(--sand-dim);margin-top:14px;letter-spacing:.02em}
-
-  /* confirmation overlay */
+  .hint{text-align:center;font-size:12.5px;color:var(--sand-dim);margin-top:14px}
+  .note{width:100%;background:rgba(232,212,190,.05);border:1px solid rgba(232,212,190,.16);
+    border-radius:14px;color:var(--sand);font-family:"Work Sans",sans-serif;font-size:16px;
+    padding:14px 16px;resize:none;outline:none;margin-bottom:2px;line-height:1.35}
+  .note::placeholder{color:var(--sand-dim)}
+  .note:focus{border-color:var(--aqua)}
+  .foot{text-align:center;margin-top:16px}
+  .foot button{background:none;border:none;color:var(--sand-dim);font-size:12px;
+    letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px}
+  /* confirmation */
   .done{position:fixed;inset:0;z-index:3;display:none;place-items:center;
     background:radial-gradient(100% 70% at 50% 40%, rgba(18,63,57,.96), rgba(10,38,35,.98));
     padding:32px;text-align:center}
   .done.show{display:grid}
-  .done .check{width:96px;height:96px;border-radius:50%;margin:0 auto 26px;
-    display:grid;place-items:center;background:rgba(95,183,166,.14);
-    border:2px solid var(--aqua)}
+  .done .check{width:96px;height:96px;border-radius:50%;margin:0 auto 26px;display:grid;
+    place-items:center;background:rgba(95,183,166,.14);border:2px solid var(--aqua)}
   .done .check svg{width:44px;height:44px}
-  @media (prefers-reduced-motion:no-preference){
-    .done.show .check{animation:pop .45s cubic-bezier(.2,1.3,.4,1) both}
-  }
+  @media (prefers-reduced-motion:no-preference){.done.show .check{animation:pop .45s cubic-bezier(.2,1.3,.4,1) both}}
   @keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
-  .done h2{font-family:"Fraunces",serif;font-weight:500;font-size:30px;margin:0 0 8px;color:var(--sand)}
-  .done p{margin:0;color:var(--sand-dim);font-size:16px;max-width:22ch}
-  .done .back{margin-top:30px;font-size:14px;color:var(--aqua);background:none;border:none;
-    letter-spacing:.04em;cursor:pointer;padding:10px}
+  .done h2{font-family:"Fraunces",serif;font-weight:500;font-size:30px;margin:0 0 8px}
+  .done p{margin:0;color:var(--sand-dim);font-size:16px;max-width:24ch}
+  .done .back{margin-top:30px;font-size:14px;color:var(--aqua);background:none;border:none;cursor:pointer;padding:10px}
+  /* login sheet */
+  .sheet{position:fixed;inset:0;z-index:4;display:none;align-items:flex-end;
+    background:rgba(10,38,35,.6);backdrop-filter:blur(2px)}
+  .sheet.show{display:flex}
+  .card{background:#0E332E;border-top-left-radius:26px;border-top-right-radius:26px;width:100%;
+    padding:28px 24px calc(env(safe-area-inset-bottom) + 26px);border-top:1px solid rgba(232,212,190,.14)}
+  .card h3{font-family:"Fraunces",serif;font-weight:500;font-size:24px;margin:0 0 4px}
+  .card .sub{color:var(--sand-dim);font-size:14px;margin:0 0 20px}
+  .code{width:100%;background:rgba(232,212,190,.06);border:1px solid rgba(232,212,190,.2);
+    border-radius:14px;color:var(--sand);font-size:26px;letter-spacing:.3em;text-align:center;
+    padding:16px;font-family:"Work Sans";outline:none}
+  .code:focus{border-color:var(--aqua)}
+  .err{color:var(--orange);font-size:13px;min-height:18px;margin:10px 2px 0;text-align:center}
+  .card .row{display:flex;gap:12px;margin-top:16px}
+  .card .row button{flex:1;min-height:56px;border-radius:14px;font-size:16px;font-weight:600;
+    font-family:"Work Sans";cursor:pointer;border:none}
+  .primary{background:var(--aqua);color:#0A2623}
+  .ghost{background:none;border:1px solid rgba(232,212,190,.2)!important;color:var(--sand)}
+  .rate-cta{margin-top:14px;width:100%;background:none;border:1px solid var(--line);
+    color:var(--sand);font-family:"Work Sans",sans-serif;font-size:15px;font-weight:500;
+    padding:14px;border-radius:14px;cursor:pointer;letter-spacing:.02em}
+  .rate-cta:hover{border-color:var(--aqua)}
+  .stars{display:flex;justify-content:center;gap:8px;margin:8px 0 6px}
+  .stars button{background:none;border:none;font-size:42px;line-height:1;cursor:pointer;
+    color:rgba(232,212,190,.26);padding:2px;transition:transform .1s,color .15s}
+  .stars button.active{color:var(--orange)}
+  .stars button:active{transform:scale(.88)}
 </style>
 </head>
 <body>
@@ -114,104 +116,190 @@
 
   <div class="wrap">
     <div class="mark">νησ<span class="dot">ί</span></div>
+    <div class="role" id="role"></div>
 
     <div class="table">
       <div class="lbl">Τραπέζι</div>
       <div class="num" id="tableNum">—</div>
     </div>
 
-    <div class="actions" id="actions">
-      <button class="btn" data-a="call" onclick="tap(this,event)">
-        <span class="ic">🔔</span><span>Κλήση σερβιτόρου</span><span class="arrow">→</span>
-      </button>
-      <button class="btn" data-a="bill" onclick="tap(this,event)">
-        <span class="ic">💳</span><span>Λογαριασμό</span><span class="arrow">→</span>
-      </button>
-      <button class="btn" data-a="order" onclick="tap(this,event)">
-        <span class="ic">🍸</span><span>Νέα παραγγελία</span><span class="arrow">→</span>
-      </button>
+    <!-- Customer mode -->
+    <div class="actions" id="customer">
+      <textarea class="note" id="note" rows="2" maxlength="140" placeholder="Θέλεις να πεις κάτι; π.χ. γάλα βρώμης, χωρίς πάγο (προαιρετικό)"></textarea>
+      <button class="btn" data-a="call" onclick="tap(this,event)"><span class="ic">🔔</span><span>Κλήση σερβιτόρου</span><span class="arrow">→</span></button>
+      <button class="btn" data-a="bill" onclick="tap(this,event)"><span class="ic">💳</span><span>Λογαριασμό</span><span class="arrow">→</span></button>
+      <button class="btn" data-a="order" onclick="tap(this,event)"><span class="ic">🍸</span><span>Νέα παραγγελία</span><span class="arrow">→</span></button>
+      <div class="hint">Ένα άγγιγμα — ερχόμαστε στο τραπέζι σας.</div>
+      <button class="rate-cta" onclick="openRate()">★ Βαθμολόγησέ μας</button>
+      <div class="foot"><button onclick="openLogin()">Προσωπικό</button></div>
     </div>
-    <div class="hint">Ένα άγγιγμα — ερχόμαστε στο τραπέζι σας.</div>
+
+    <!-- Staff mode -->
+    <div class="actions" id="staff" style="display:none">
+      <button class="btn staff" onclick="arrive(this,event)"><span class="ic">✓</span><span id="arriveLbl">Επιβεβαίωση άφιξης</span></button>
+      <div class="hint" id="staffHint">Ακούμπησε το τραπέζι μόλις φτάσεις.</div>
+      <div class="foot"><button onclick="logout()">Αποσύνδεση</button></div>
+    </div>
   </div>
 
+  <!-- confirmation overlay -->
   <div class="done" id="done" role="status" aria-live="polite">
     <div>
-      <div class="check">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#5FB7A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-      </div>
+      <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#5FB7A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
       <h2 id="doneTitle">Λάβαμε το μήνυμά σας</h2>
       <p id="doneMsg">Ο σερβιτόρος ενημερώθηκε και έρχεται αμέσως.</p>
       <button class="back" onclick="closeDone()">Επιστροφή</button>
     </div>
   </div>
 
+  <!-- login sheet -->
+  <div class="sheet" id="loginSheet">
+    <div class="card">
+      <h3>Σύνδεση προσωπικού</h3>
+      <p class="sub">Βάλε τον προσωπικό σου κωδικό. Γίνεται μία φορά σε αυτό το κινητό.</p>
+      <input class="code" id="codeInput" inputmode="numeric" placeholder="••••" maxlength="8" autocomplete="off">
+      <div class="err" id="loginErr"></div>
+      <div class="row">
+        <button class="ghost" onclick="closeLogin()">Άκυρο</button>
+        <button class="primary" onclick="doLogin()">Σύνδεση</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- rating sheet -->
+  <div class="sheet" id="rateSheet">
+    <div class="card">
+      <h3>Πώς ήταν η εξυπηρέτηση;</h3>
+      <p class="sub">Η γνώμη σου μας βοηθάει να γίνουμε καλύτεροι. Προαιρετικό.</p>
+      <div class="stars" id="stars">
+        <button data-s="1">★</button><button data-s="2">★</button><button data-s="3">★</button><button data-s="4">★</button><button data-s="5">★</button>
+      </div>
+      <textarea class="note" id="rateNote" rows="2" maxlength="140" placeholder="Θες να προσθέσεις κάτι; (προαιρετικό)"></textarea>
+      <div class="err" id="rateErr"></div>
+      <div class="row">
+        <button class="ghost" onclick="closeRate()">Άκυρο</button>
+        <button class="primary" onclick="submitRate()">Αποστολή</button>
+      </div>
+    </div>
+  </div>
+
 <script>
-  // Table number: Apps Script replaces __TABLE__ on serve.
-  // Standalone preview falls back to ?table= in the URL, then a demo value.
-  var TABLE = (function(){
-    var injected = "__TABLE__";
-    if (injected && injected.indexOf("__TABLE") === -1 && injected !== "") return injected;
-    var p = new URLSearchParams(location.search).get("table");
-    return p || "5";
-  })();
-  document.getElementById("tableNum").textContent = TABLE;
+/* ============================================================
+   ΡΥΘΜΙΣΕΙΣ — άλλαξε μόνο αυτά τα δύο
+   ============================================================ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbx2ssm1T0QpR4eIzNcAtYlg_i4aFkKyrnjDIH6PcwL76bOy7z-v9-2prwEyiuKKxJTOeQ/exec';
+const STAFF = {            // κωδικός : όνομα σερβιτόρου
+  '1234': 'Γιώργος',
+  '5678': 'Μαρία',
+  '4321': 'Νίκος'
+};
+/* ============================================================ */
 
-  var COPY = {
-    call:  {t:"Λάβαμε το μήνυμά σας", m:"Ο σερβιτόρος ενημερώθηκε και έρχεται αμέσως."},
-    bill:  {t:"Ετοιμάζουμε τον λογαριασμό", m:"Ένας σερβιτόρος έρχεται στο τραπέζι σας."},
-    order: {t:"Ερχόμαστε για παραγγελία", m:"Κρατήστε λίγο — είμαστε στο τραπέζι σας αμέσως."},
-    again: {t:"Σας έχουμε ήδη", m:"Η κλήση σας καταγράφηκε — ερχόμαστε!"}
-  };
+// Τραπέζι από το URL: ?t=5  (ή ?table=5)
+const params = new URLSearchParams(location.search);
+const TABLE = (params.get('t') || params.get('table') || '—').replace(/[^0-9A-Za-zΑ-Ωα-ω\-]/g,'').slice(0,12) || '—';
+document.getElementById('tableNum').textContent = TABLE;
 
-  function ripple(btn, ev){
-    var r = document.createElement("span");
-    r.className = "ripple";
-    var rect = btn.getBoundingClientRect();
-    var x = (ev && ev.clientX ? ev.clientX : rect.left+rect.width/2) - rect.left;
-    var y = (ev && ev.clientY ? ev.clientY : rect.top+rect.height/2) - rect.top;
-    r.style.left = x+"px"; r.style.top = y+"px";
-    r.style.width = r.style.height = Math.max(rect.width,rect.height)+"px";
-    btn.appendChild(r);
-    setTimeout(function(){ r.remove(); }, 650);
-  }
+const LS_KEY = 'nisi_staff_name';
+function staffName(){ try{ return localStorage.getItem(LS_KEY) || ''; }catch(e){ return ''; } }
 
-  function tap(btn, ev){
-    ripple(btn, ev);
-    var action = btn.getAttribute("data-a");
-    // lock all buttons briefly to avoid double-fire
-    var all = document.querySelectorAll(".btn");
-    all.forEach(function(b){ b.disabled = true; });
+const COPY = {
+  call:{t:"Λάβαμε το μήνυμά σας", m:"Ο σερβιτόρος ενημερώθηκε και έρχεται αμέσως."},
+  bill:{t:"Ετοιμάζουμε τον λογαριασμό", m:"Ένας σερβιτόρος έρχεται στο τραπέζι σας."},
+  order:{t:"Ερχόμαστε για παραγγελία", m:"Κρατήστε λίγο — είμαστε στο τραπέζι σας αμέσως."},
+  again:{t:"Σας έχουμε ήδη", m:"Η κλήση σας καταγράφηκε — ερχόμαστε!"},
+  arrived:{t:"Καταγράφηκε", m:"Η άφιξη στο τραπέζι καταγράφηκε. Ευχαριστώ!"},
+  thanks:{t:"Ευχαριστούμε!", m:"Καταγράψαμε τη βαθμολογία σου — καλή διασκέδαση!"}
+};
 
-    var onOk = function(res){
-      var key = (res && res.suppressed) ? "again" : action;
-      show(key);
-      setTimeout(function(){ all.forEach(function(b){ b.disabled = false; }); }, 400);
-    };
-    var onFail = function(){
-      // failure is direction, not mood: tell them what to do
-      document.getElementById("doneTitle").textContent = "Δεν στάλθηκε";
-      document.getElementById("doneMsg").textContent = "Δοκιμάστε ξανά ή καλέστε τον σερβιτόρο με το χέρι.";
-      document.getElementById("done").classList.add("show");
-      all.forEach(function(b){ b.disabled = false; });
-    };
+function render(){
+  const name = staffName();
+  const isStaff = !!name;
+  document.getElementById('customer').style.display = isStaff ? 'none' : 'flex';
+  document.getElementById('staff').style.display = isStaff ? 'flex' : 'none';
+  document.getElementById('role').textContent = isStaff ? ('Προσωπικό · ' + name) : '';
+  if(isStaff){ document.getElementById('arriveLbl').textContent = 'Άφιξη — Τραπέζι ' + TABLE; }
+}
+render();
 
-    if (window.google && google.script && google.script.run){
-      google.script.run.withSuccessHandler(onOk).withFailureHandler(onFail).notify(TABLE, action);
-    } else {
-      // preview mode (no backend): simulate success
-      setTimeout(function(){ onOk({ok:true, suppressed:false}); }, 650);
-    }
-  }
+/* ---------- αποστολή στο backend (fire-and-forget) ---------- */
+function post(payload){
+  try{
+    fetch(API_URL, {method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)});
+  }catch(e){}
+}
 
-  function show(key){
-    var c = COPY[key] || COPY.call;
-    document.getElementById("doneTitle").textContent = c.t;
-    document.getElementById("doneMsg").textContent = c.m;
-    document.getElementById("done").classList.add("show");
-    clearTimeout(window.__t);
-    window.__t = setTimeout(closeDone, 5000);
-  }
-  function closeDone(){ document.getElementById("done").classList.remove("show"); }
+/* ---------- πελάτης: κλήση ---------- */
+function tap(btn, ev){
+  ripple(btn, ev);
+  const action = btn.getAttribute('data-a');
+  // τοπικό cooldown 45'' για να μη σπαμάρει
+  const key = 'cd_'+TABLE+'_'+action;
+  let recent = false;
+  try{ recent = (Date.now() - (+localStorage.getItem(key)||0)) < 45000; localStorage.setItem(key, Date.now()); }catch(e){}
+  const noteEl = document.getElementById('note');
+  const note = (noteEl ? noteEl.value : '').trim().slice(0,140);
+  lockButtons(true);
+  post({table:TABLE, action:action, note:note});
+  if(noteEl) noteEl.value='';
+  setTimeout(()=>{ show(recent?'again':action); lockButtons(false); }, 550);
+}
+
+/* ---------- σερβιτόρος: άφιξη ---------- */
+function arrive(btn, ev){
+  ripple(btn, ev);
+  btn.disabled = true;
+  post({table:TABLE, action:'arrive', staff:staffName()});
+  setTimeout(()=>{ show('arrived'); btn.disabled = false; }, 550);
+}
+
+/* ---------- login ---------- */
+function openLogin(){ document.getElementById('loginErr').textContent=''; document.getElementById('codeInput').value=''; document.getElementById('loginSheet').classList.add('show'); setTimeout(()=>document.getElementById('codeInput').focus(),100); }
+function closeLogin(){ document.getElementById('loginSheet').classList.remove('show'); }
+function doLogin(){
+  const code = document.getElementById('codeInput').value.trim();
+  const name = STAFF[code];
+  if(!name){ document.getElementById('loginErr').textContent = 'Λάθος κωδικός. Δοκίμασε ξανά.'; return; }
+  try{ localStorage.setItem(LS_KEY, name); }catch(e){}
+  closeLogin(); render();
+}
+function logout(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} render(); }
+
+/* ---------- βαθμολογία ---------- */
+var chosenStars = 0;
+function openRate(){ chosenStars=0; paintStars(); document.getElementById('rateErr').textContent=''; document.getElementById('rateNote').value=''; document.getElementById('rateSheet').classList.add('show'); }
+function closeRate(){ document.getElementById('rateSheet').classList.remove('show'); }
+function paintStars(){ document.querySelectorAll('#stars button').forEach(function(b){ b.classList.toggle('active', Number(b.dataset.s)<=chosenStars); }); }
+document.getElementById('stars').addEventListener('click', function(e){ var b=e.target.closest('button'); if(b){ chosenStars=Number(b.dataset.s); paintStars(); } });
+function submitRate(){
+  if(!chosenStars){ document.getElementById('rateErr').textContent='Διάλεξε αστέρια πρώτα.'; return; }
+  var note=document.getElementById('rateNote').value.trim().slice(0,140);
+  post({table:TABLE, action:'rating', stars:chosenStars, note:note});
+  closeRate();
+  show('thanks');
+}
+
+/* ---------- ui helpers ---------- */
+function lockButtons(v){ document.querySelectorAll('#customer .btn').forEach(b=>b.disabled=v); }
+function ripple(btn, ev){
+  const r=document.createElement('span'); r.className='ripple';
+  const rect=btn.getBoundingClientRect();
+  const x=(ev&&ev.clientX?ev.clientX:rect.left+rect.width/2)-rect.left;
+  const y=(ev&&ev.clientY?ev.clientY:rect.top+rect.height/2)-rect.top;
+  r.style.left=x+'px'; r.style.top=y+'px'; r.style.width=r.style.height=Math.max(rect.width,rect.height)+'px';
+  btn.appendChild(r); setTimeout(()=>r.remove(),650);
+}
+function show(key){
+  const c=COPY[key]||COPY.call;
+  document.getElementById('doneTitle').textContent=c.t;
+  document.getElementById('doneMsg').textContent=c.m;
+  document.getElementById('done').classList.add('show');
+  clearTimeout(window.__t); window.__t=setTimeout(closeDone, key==='arrived'?2500:5000);
+}
+function closeDone(){ document.getElementById('done').classList.remove('show'); }
+document.getElementById('codeInput')&&document.getElementById('codeInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
 </script>
 </body>
 </html>
