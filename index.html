@@ -61,6 +61,10 @@
   .cta:hover{border-color:var(--aqua)}
   .cta small{color:var(--sand-dim);font-weight:400}
   .foot{text-align:center;margin-top:8px}
+  .order-cta{width:100%;min-height:60px;border:none;border-radius:16px;background:var(--aqua);color:#0A2623;
+    font-family:"Work Sans";font-size:17px;font-weight:600;cursor:pointer;display:none;align-items:center;
+    justify-content:center;gap:10px;margin-bottom:12px;text-decoration:none}
+  .order-cta small{font-weight:500;opacity:.75}
   .foot button{background:none;border:none;color:var(--sand-dim);font-size:12px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px}
   .note{width:100%;background:rgba(232,212,190,.05);border:1px solid rgba(232,212,190,.16);border-radius:14px;
     color:var(--sand);font-family:"Work Sans";font-size:15px;padding:13px 15px;resize:none;outline:none;line-height:1.35}
@@ -124,6 +128,7 @@
 
     <!-- Customer -->
     <div class="actions" id="customer">
+      <a class="order-cta" id="orderBtn" href="#" target="_blank" rel="noopener">🍽️ Παράγγειλε online <small>· Order online</small></a>
       <textarea class="note" id="note" rows="2" maxlength="140" placeholder="Θέλεις να πεις κάτι; (προαιρετικό) · Anything to add? (optional)"></textarea>
       <button class="btn" data-a="call" onclick="tap(this,event)"><span class="ic">🔔</span><span class="txt"><b>Κλήση σερβιτόρου</b><i>Call the waiter</i></span><span class="arrow">→</span></button>
       <button class="btn" data-a="bill" onclick="tap(this,event)"><span class="ic">💳</span><span class="txt"><b>Λογαριασμό</b><i>The bill, please</i></span><span class="arrow">→</span></button>
@@ -233,6 +238,70 @@ function paintTable(){
 if(FLEX){ var tb=document.getElementById('tableBlock'); if(tb){ tb.classList.add('tappable'); tb.addEventListener('click',openFlex); } }
 paintTable();
 
+/* ---------- online παραγγελία (ninefood) ανά τραπέζι ---------- */
+var NF_BASE='https://www.ninefood.gr/qrmenu/restaurant/avant-garde/';
+var NINEFOOD={
+  '1A':'AG:ce9a3461-223a-f011-a2d9-000d3aa92bf3',
+  '1B':'AG:a28b3c69-223a-f011-a2d9-000d3aa92bf3',
+  '1Γ':'AG:bd8b3c69-223a-f011-a2d9-000d3aa92bf3',
+  '1Δ':'AG:2c8c3c69-223a-f011-a2d9-000d3aa92bf3',
+  '2A':'AG:218c3c69-223a-f011-a2d9-000d3aa92bf3',
+  '2B':'AG:738c3c69-223a-f011-a2d9-000d3aa92bf3',
+  '2Γ':'AG:9c8c3c69-223a-f011-a2d9-000d3aa92bf3',
+  '2Δ':'AG:a78c3c69-223a-f011-a2d9-000d3aa92bf3',
+  '3A':'AG:7f75356f-223a-f011-a2d9-000d3aa92bf3',
+  '3B':'AG:ee75356f-223a-f011-a2d9-000d3aa92bf3',
+  '3Γ':'AG:1776356f-223a-f011-a2d9-000d3aa92bf3',
+  '3Δ':'AG:1e151185-223a-f011-a2d9-000d3aa92bf3',
+  '4A':'AG:29151185-223a-f011-a2d9-000d3aa92bf3',
+  '4B':'AG:9b151185-223a-f011-a2d9-000d3aa92bf3',
+  '4Γ':'AG:a6151185-223a-f011-a2d9-000d3aa92bf3',
+  '4Δ':'AG:07161185-223a-f011-a2d9-000d3aa92bf3',
+  '5A':'AG:12161185-223a-f011-a2d9-000d3aa92bf3',
+  '5B':'AG:042c438b-223a-f011-a2d9-000d3aa92bf3',
+  '5Γ':'AG:b42c438b-223a-f011-a2d9-000d3aa92bf3',
+  '5Δ':'AG:dd2c438b-223a-f011-a2d9-000d3aa92bf3',
+  '6A':'AG:e82c438b-223a-f011-a2d9-000d3aa92bf3',
+  '6B':'AG:64dd5591-223a-f011-a2d9-000d3aa92bf3',
+  '6Γ':'AG:8ddd5591-223a-f011-a2d9-000d3aa92bf3',
+  '6Δ':'AG:2dc9f2a3-223a-f011-a2d9-000d3aa92bf3',
+  '7A':'AG:42c9f2a3-223a-f011-a2d9-000d3aa92bf3',
+  '7B':'AG:b2c9f2a3-223a-f011-a2d9-000d3aa92bf3',
+  '7Γ':'AG:bdc9f2a3-223a-f011-a2d9-000d3aa92bf3',
+  '7Δ':'AG:89c9f2a3-223a-f011-a2d9-000d3aa92bf3',
+  'EA1':'AG:a80c96e3-223a-f011-a2d9-000d3aa92bf3',
+  'EA10':'AG:a90c96e3-223a-f011-a2d9-000d3aa92bf3',
+  'EA11':'AG:590c96e3-223a-f011-a2d9-000d3aa92bf3',
+  'EA12':'AG:2a0d96e3-223a-f011-a2d9-000d3aa92bf3',
+  'EA13':'AG:4e0c96e3-223a-f011-a2d9-000d3aa92bf3',
+  'EA14':'AG:d4d538ea-223a-f011-a2d9-000d3aa92bf3',
+  'EA15':'AG:b3bacfdc-223a-f011-a2d9-000d3aa92bf3',
+  'EA16':'AG:a8bacfdc-223a-f011-a2d9-000d3aa92bf3',
+  'EA2':'AG:7fbacfdc-223a-f011-a2d9-000d3aa92bf3',
+  'EA3':'AG:ae1cc3d6-223a-f011-a2d9-000d3aa92bf3',
+  'EA4':'AG:9e1cc3d6-223a-f011-a2d9-000d3aa92bf3',
+  'EA5':'AG:1ce1d5c8-223a-f011-a2d9-000d3aa92bf3',
+  'EA6':'AG:d5e0d5c8-223a-f011-a2d9-000d3aa92bf3',
+  'N61':'AG:bf785dc8-253a-f011-a2d9-000d3aa92bf3',
+  'N62':'AG:f5775dc8-253a-f011-a2d9-000d3aa92bf3',
+  'N63':'AG:78785dc8-253a-f011-a2d9-000d3aa92bf3',
+  'N64':'AG:70775dc8-253a-f011-a2d9-000d3aa92bf3',
+  'N65':'AG:81775dc8-253a-f011-a2d9-000d3aa92bf3',
+  'N66':'AG:6d785dc8-253a-f011-a2d9-000d3aa92bf3',
+  'N67':'AG:237251c2-253a-f011-a2d9-000d3aa92bf3',
+  'N68':'AG:177251c2-253a-f011-a2d9-000d3aa92bf3',
+  'N69':'AG:8f7151c2-253a-f011-a2d9-000d3aa92bf3'
+};
+var GR2LAT={'Α':'A','Β':'B','Ε':'E','Ζ':'Z','Η':'H','Ι':'I','Κ':'K','Μ':'M','Ν':'N','Ο':'O','Ρ':'P','Τ':'T','Υ':'Y','Χ':'X'};
+function canonT(s){ s=String(s||'').toUpperCase().trim(); var o=''; for(var i=0;i<s.length;i++){ o+=(GR2LAT[s[i]]||s[i]); } return o; }
+function resolveOrder(){
+  var btn=document.getElementById('orderBtn'); if(!btn) return;
+  var code=TABLE?NINEFOOD[canonT(TABLE)]:null;
+  if(code){ btn.href=code.indexOf('AG:')===0?(NF_BASE+code.slice(3)):code; btn.style.display='flex'; }
+  else { btn.style.display='none'; }
+}
+resolveOrder();
+
 function render(){
   var name=staffName(), isStaff=!!name;
   document.getElementById('customer').style.display=isStaff?'none':'flex';
@@ -306,7 +375,7 @@ function submitFlex(){
   var v=cleanT(document.getElementById('flexInput').value.trim());
   if(!v){ document.getElementById('flexErr').textContent='Βάλε έναν αριθμό · Enter a number'; return; }
   TABLE=v; try{ sessionStorage.setItem('flex_table',TABLE); }catch(e){}
-  closeFlex(); paintTable(); render();
+  closeFlex(); paintTable(); resolveOrder(); render();
 }
 
 /* ui */
