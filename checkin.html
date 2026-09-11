@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avant Garde - Check-in</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+    background: #2B2B2B;
+    color: #fff;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    background: #3a3a3a;
+    border-radius: 16px;
+    padding: 28px 24px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+  }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  .position { color: #E8923C; font-weight: 600; margin-bottom: 20px; }
+  input[type=time] {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    background: #E8923C;
+    color: #2B2B2B;
+    cursor: pointer;
+  }
+  button:disabled { opacity: 0.5; }
+  .task-list { text-align: left; margin-top: 20px; }
+  .task {
+    background: #2B2B2B;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .error { color: #ff8080; margin-top: 12px; }
+  a.tg-btn {
+    display: block;
+    background: #2E8C7E;
+    color: #fff;
+    text-decoration: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .muted { font-size: 13px; color: #aaa; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div class="card" id="app">Φόρτωση...</div>
+
+<script>
+// ΒΑΛΕ ΕΔΩ το Web App URL από το Apps Script deployment
+const API_URL = "https://script.google.com/macros/s/ΒΑΛΕ_ΤΟ_DEPLOYMENT_ID/exec";
+
+const params = new URLSearchParams(window.location.search);
+const code = params.get('code');
+const app = document.getElementById('app');
+
+if (!code) {
+  app.innerHTML = '<p class="error">Λείπει κωδικός στο link.</p>';
+} else {
+  lookup();
+}
+
+function lookup() {
+  app.innerHTML = 'Φόρτωση...';
+  fetch(`${API_URL}?action=lookup&code=${encodeURIComponent(code)}`)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok) { app.innerHTML = `<p class="error">${data.error}</p>`; return; }
+      if (!data.linked) {
+        renderLinkScreen(data);
+      } else {
+        renderShiftScreen(data);
+      }
+    })
+    .catch(() => app.innerHTML = '<p class="error">Σφάλμα σύνδεσης.</p>');
+}
+
+function renderLinkScreen(data) {
+  app.innerHTML = `
+    <h1>Γεια σου, ${data.name}!</h1>
+    <div class="position">${data.position}</div>
+    <p>Πρώτη φορά; Συνδέσου με το Telegram για να παίρνεις τις υπενθυμίσεις σου.</p>
+    <a class="tg-btn" href="https://t.me/${data.botUsername}?start=${code}">Σύνδεση με Telegram</a>
+    <div class="muted">Μετά τη σύνδεση, σκάναρε ξανά την κάρτα σου.</div>
+  `;
+}
+
+function renderShiftScreen(data) {
+  app.innerHTML = `
+    <h1>Γεια σου, ${data.name}!</h1>
+    <div class="position">${data.position}</div>
+    <p>Μέχρι τι ώρα δουλεύεις σήμερα;</p>
+    <input type="time" id="shiftEnd">
+    <button onclick="submitShift()">Ξεκίνα βάρδια</button>
+    <div id="result"></div>
+  `;
+}
+
+function submitShift() {
+  const shiftEnd = document.getElementById('shiftEnd').value;
+  if (!shiftEnd) return;
+  document.querySelector('button').disabled = true;
+  fetch(`${API_URL}?action=setShift&code=${encodeURIComponent(code)}&shiftEnd=${encodeURIComponent(shiftEnd)}`)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok) { document.getElementById('result').innerHTML = `<p class="error">${data.error}</p>`; return; }
+      let html = '<div class="task-list"><h1>Δουλειές σήμερα</h1>';
+      data.tasks.forEach(t => html += `<div class="task"><span>${t.task}</span><span>${t.time}</span></div>`);
+      html += '</div><p class="muted">Θα σου έρθουν στο Telegram την ώρα τους.</p>';
+      app.innerHTML = html;
+    });
+}
+</script>
+</body>
+</html>
